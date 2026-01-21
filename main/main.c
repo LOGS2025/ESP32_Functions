@@ -3,8 +3,13 @@
 
 #include "esp_err.h"
 
-#define POT_GPIO          (5) // Define the output GPIO
+#define POT_GPIO GPIO_NUM_5 // Define the output GPIO
+#define IO_GPIO GPIO_NUM_6
 
+void change_Duty(int new_duty){
+    ESP_ERROR_CHECK(ledc_set_duty(LEDC_MODE, LEDC_CHANNEL, new_duty));
+    ESP_ERROR_CHECK(ledc_update_duty(LEDC_MODE, LEDC_CHANNEL));
+}
 
 void app_main()
 {
@@ -16,5 +21,15 @@ void app_main()
     // Update duty to apply the new value
     ESP_ERROR_CHECK(ledc_update_duty(LEDC_MODE, LEDC_CHANNEL));
 
+    int duty;
+
+    while(1){
+        printf("ledc_get_duty(): %d\n", PWM_ledc_get_duty(POT_GPIO));
+        esp_Delay(3000);
+        printf("Choose a new duty :\n");
+        scanf(":", &duty);
+        change_Duty(duty);
+    }
+    
     return;
 }

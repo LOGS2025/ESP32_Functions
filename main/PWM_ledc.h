@@ -8,6 +8,7 @@
 #include "esp_system.h"
 
 #include "driver/ledc.h" // LED Control
+#include "led_gpio.h"
 
 #define LEDC_TIMER              LEDC_TIMER_0
 #define LEDC_MODE               LEDC_LOW_SPEED_MODE
@@ -19,3 +20,5 @@
 void PWM_ledc_init_timer(void);
 
 void PWM_ledc_init_channel(int pot_gpio);
+
+int PWM_ledc_get_duty(int pot_gpio);

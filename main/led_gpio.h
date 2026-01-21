@@ -9,6 +9,8 @@
 
 #include "driver/gpio.h" // GPIO pin control
 
+void esp_Delay(int time);
+
 int LED_config_output(int gpio_pin_num);
 
 int LED_config_input(int gpio_pin_num);

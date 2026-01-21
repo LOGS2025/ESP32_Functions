@@ -29,3 +29,7 @@ void PWM_ledc_init_channel(int pot_gpio){
 
     ESP_ERROR_CHECK(ledc_channel_config(&ledc_channel));
 }
+
+int PWM_ledc_get_duty(int pot_gpio){
+    return ledc_get_duty(LEDC_MODE, LEDC_CHANNEL);
+}

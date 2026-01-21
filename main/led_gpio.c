@@ -1,6 +1,10 @@
 #include "led_gpio.h"
 
 
+void esp_Delay(int time){
+    vTaskDelay(pdMS_TO_TICKS(time));
+}
+
 // Returns the value read for input
 int LED_receive(int gpio_num_pin){ 
     return gpio_get_level(gpio_num_pin);
@@ -50,7 +54,7 @@ void LED_blink(int gpio_num_pin){
         vTaskDelay(pdMS_TO_TICKS(1000));
 
         gpio_set_level(gpio_num_pin, 1);
-        vTaskDelay(pdMS_TO_TICKS(1000));
+        esp_Delay(1000);
 
         i++;
         printf("Vuelta %i\n",i);
@@ -58,3 +62,4 @@ void LED_blink(int gpio_num_pin){
     // Reset any mode it had
     gpio_reset_pin(gpio_num_pin);
 }
+
