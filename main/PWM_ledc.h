@@ -21,4 +21,6 @@ void PWM_ledc_init_timer(void);
 
 void PWM_ledc_init_channel(int pot_gpio);
 
-int PWM_ledc_get_duty(int pot_gpio);
+int PWM_ledc_get_duty(void);
+
+int PWM_ledc_get_freq(void);

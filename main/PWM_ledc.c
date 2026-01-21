@@ -30,6 +30,9 @@ void PWM_ledc_init_channel(int pot_gpio){
     ESP_ERROR_CHECK(ledc_channel_config(&ledc_channel));
 }
 
-int PWM_ledc_get_duty(int pot_gpio){
+int PWM_ledc_get_duty(void){
     return ledc_get_duty(LEDC_MODE, LEDC_CHANNEL);
+}
+int PWM_ledc_get_freq(void){
+    return ledc_get_freq(LEDC_MODE, LEDC_TIMER);
 }

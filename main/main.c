@@ -21,15 +21,22 @@ void app_main()
     // Update duty to apply the new value
     ESP_ERROR_CHECK(ledc_update_duty(LEDC_MODE, LEDC_CHANNEL));
 
-    int duty;
+    int duty = 4096;
 
     while(1){
-        printf("ledc_get_duty(): %d\n", PWM_ledc_get_duty(POT_GPIO));
-        esp_Delay(3000);
-        printf("Choose a new duty :\n");
-        scanf(":", &duty);
-        change_Duty(duty);
+        printf("ledc_get_duty(): %d\n", PWM_ledc_get_duty());
+        printf("ledc_get_freq(): %d\n", PWM_ledc_get_freq());
+        esp_Delay(250);
+        if (duty > 0){
+            duty = duty - 100;
+            change_Duty(duty);
+        } else {
+            change_Duty(0);
+            break;
+        }
     }
+
+    ledc_stop(LEDC_MODE, LEDC_CHANNEL,0);
     
     return;
 }
