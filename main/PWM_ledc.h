@@ -21,7 +21,7 @@ void PWM_ledc_init_timer(void);
 
 void PWM_ledc_init_channel(int pot_gpio);
 
-void PWM_start_targetDuty_safe(int duty, int scale, int cycle_num);
+void PWM_set_targetDuty_safe(int duty, int scale, int cycle_num);
 
 void PWM_set_0_Duty_safe(int scale, int cycle_num);
 

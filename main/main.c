@@ -22,23 +22,30 @@ void app_main()
 //    ESP_ERROR_CHECK(ledc_update_duty(LEDC_MODE, LEDC_CHANNEL));
 
     int duty = 1000;
-    int freq = 4000;
     int cycle_num = 10 ;
     int scale = 2 ;
 
     // Init fade thread
     ledc_fade_func_install(0); // 0 is default interrupt allocation
     
-    // Loop
-    while(1)
+    int n = 20, i = 0;
+    // Loop n times
+    while(i < n)
     {
+        PWM_set_targetDuty_safe(duty, scale, cycle_num);
+
         printf("ledc_get_duty(): %d\n", PWM_ledc_get_duty());
         printf("ledc_get_freq(): %d\n", PWM_ledc_get_freq());
 
         esp_Delay(1000);    
+        
+        PWM_set_0_Duty_safe(scale, cycle_num);
+        esp_Delay(1000);    
+
+
+        i++;
     }
 
     ledc_stop(LEDC_MODE, LEDC_CHANNEL,0);
     ledc_fade_func_uninstall();
-
 }
