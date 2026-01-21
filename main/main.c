@@ -17,26 +17,28 @@ void app_main()
     PWM_ledc_init_timer();
     PWM_ledc_init_channel(POT_GPIO);
     // Set duty to 50%
-    ESP_ERROR_CHECK(ledc_set_duty(LEDC_MODE, LEDC_CHANNEL, LEDC_DUTY));
-    // Update duty to apply the new value
-    ESP_ERROR_CHECK(ledc_update_duty(LEDC_MODE, LEDC_CHANNEL));
+//    ESP_ERROR_CHECK(ledc_set_duty(LEDC_MODE, LEDC_CHANNEL, 0));
+//    // Update duty to apply the new value
+//    ESP_ERROR_CHECK(ledc_update_duty(LEDC_MODE, LEDC_CHANNEL));
 
-    int duty = 4096;
+    int duty = 1000;
+    int freq = 4000;
+    int cycle_num = 10 ;
+    int scale = 2 ;
 
-    while(1){
+    // Init fade thread
+    ledc_fade_func_install(0); // 0 is default interrupt allocation
+    
+    // Loop
+    while(1)
+    {
         printf("ledc_get_duty(): %d\n", PWM_ledc_get_duty());
         printf("ledc_get_freq(): %d\n", PWM_ledc_get_freq());
-        esp_Delay(250);
-        if (duty > 0){
-            duty = duty - 100;
-            change_Duty(duty);
-        } else {
-            change_Duty(0);
-            break;
-        }
+
+        esp_Delay(1000);    
     }
 
     ledc_stop(LEDC_MODE, LEDC_CHANNEL,0);
-    
-    return;
+    ledc_fade_func_uninstall();
+
 }

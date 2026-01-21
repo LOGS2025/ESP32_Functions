@@ -142,7 +142,7 @@ ___
 When driving #LED's
 	<span style="color:rgb(66, 205, 255)">primarily, the</span> #duty-cycle<span style="color:rgb(66, 205, 255)"> is changed to vary the</span> ***light intensity***.
 
-To do this, the options are :
+To do this, the options are :w
 #### Change PWM Duty Cycle using Software
  **Set**             _ledc_set_duty();_
  **Update**	  _ledc_update_duty();_
@@ -238,6 +238,36 @@ void app_main()
 	return;
 }
 ```
+
+___
+# Explanation for PWM
+ # Motors
+  ## Varying the Work Cycle
+   Para motores DC. Variar el #duty-cycle controla la velocidad del motor. 
+   A corriente más continua, mayor energía y mayor velocidad.
+   ### Why?
+   El voltaje proporcionado es constante, $x[V]$, pero al utilizar **PWM**, y convertir en un pulso intermitente, reducimos el voltaje recibido por nuestro motor.
+ # Power
+  ## Source
+   Regular voltaje.
+ # LED
+  ## Regulate ON time
+   Regula la energía gastada en el LED para reducir el desperdicio.
+___
+## Resolución 
+The ESP32 module [has a 1-16 bit resolution](https://www.theengineeringprojects.com/2021/12/esp32-pwm.html). It defines the $$\text{number of steps it can have from zero power to full power.}$$
+___
+
+## How to program for a DC motor
+ # Mechanical inertia is an important time and efficiency factor
+  We will set a duty ramp -> fade to account for this.
+
+
+
+
+
+![[Pasted image 20260120200732.png]]
+
 
 
 ___

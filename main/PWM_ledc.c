@@ -36,3 +36,27 @@ int PWM_ledc_get_duty(void){
 int PWM_ledc_get_freq(void){
     return ledc_get_freq(LEDC_MODE, LEDC_TIMER);
 }
+
+void PWM_set_targetDuty_safe(int duty, int scale, int cycle_num){
+    ledc_set_fade_step_and_start(
+        LEDC_MODE, 
+        LEDC_CHANNEL, 
+        duty, 
+        scale, 
+        cycle_num,
+        LEDC_FADE_NO_WAIT    // LEDC fade function will return immediately
+    );
+    esp_Delay(1000);
+}
+
+void PWM_set_0_Duty_safe(int scale, int cycle_num){
+    ledc_set_fade_step_and_start(
+        LEDC_MODE, 
+        LEDC_CHANNEL, 
+        0, 
+        scale, 
+        cycle_num,
+        LEDC_FADE_NO_WAIT
+    );
+    esp_Delay(1000);
+}

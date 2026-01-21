@@ -14,12 +14,16 @@
 #define LEDC_MODE               LEDC_LOW_SPEED_MODE
 #define LEDC_CHANNEL            LEDC_CHANNEL_0
 #define LEDC_DUTY_RES           LEDC_TIMER_13_BIT // Set duty resolution to 13 bits
-#define LEDC_DUTY               (4096) // Set duty to 50%. (2 ** 13) * 50% = 4096
+#define LEDC_MAX_DUTY               (4096) // Set duty to 50%. (2 ** 13) * 50% = 4096
 #define LEDC_FREQUENCY          (4000) // Frequency in Hertz. Set frequency at 4 kHz
 
 void PWM_ledc_init_timer(void);
 
 void PWM_ledc_init_channel(int pot_gpio);
+
+void PWM_start_targetDuty_safe(int duty, int scale, int cycle_num);
+
+void PWM_set_0_Duty_safe(int scale, int cycle_num);
 
 int PWM_ledc_get_duty(void);
 
