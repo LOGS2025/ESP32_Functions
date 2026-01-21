@@ -268,6 +268,8 @@ ___
 
 ![[Pasted image 20260120200732.png]]
 
+## Programming the AD converter for analog input
+
 
 
 ___
