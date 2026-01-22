@@ -1,5 +1,10 @@
 #include "PWM_ledc.h"
 
+void change_Duty(int new_duty){
+    ESP_ERROR_CHECK(ledc_set_duty(LEDC_MODE, LEDC_CHANNEL, new_duty));
+    ESP_ERROR_CHECK(ledc_update_duty(LEDC_MODE, LEDC_CHANNEL));
+}
+
 void PWM_ledc_init_timer(void){
         //PWM 
     // LEDC PWM timer config

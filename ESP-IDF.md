@@ -262,15 +262,38 @@ ___
  # Mechanical inertia is an important time and efficiency factor
   We will set a duty ramp -> fade to account for this.
 
-
-
-
-
 ![[Pasted image 20260120200732.png]]
 
 ## Programming the AD converter for analog input
+ # Oneshot
+ ### When using ADC_UNIT_1
+  We get a table like this, that maps each channel to each GPIO.
 
-
+| ADC Channel   | GPIO   |
+| ------------- | ------ |
+| ADC_CHANNEL_0 | GPIO36 |
+| ADC_CHANNEL_1 | GPIO37 |
+| ADC_CHANNEL_2 | GPIO38 |
+| ADC_CHANNEL_3 | GPIO39 |
+| ADC_CHANNEL_4 | GPIO32 |
+| ADC_CHANNEL_5 | GPIO33 |
+| ADC_CHANNEL_6 | GPIO34 |
+| ADC_CHANNEL_7 | GPIO35 |
+ # Calibration
+ ADC calibration is given by the _handle_ **adc_cali_handle_t**.
+  ### adc_cali_check_scheme()
+   Returns the supported calibration schemes for the chip.
+  ### adc_cali_check_scheme()
+   Checks the calibration scheme given by the user.
+ 
+ ## Line Fitting Scheme
+This uses the same configuration worked by _oneshot structs_:
+	We need to fill the next:
+- unit_id -> the ADC
+- atten -> attenuation the raw results use
+- bitwidth 
+ ### eFuse?
+ 
 
 ___
 [^1]: GPIO : 
