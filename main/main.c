@@ -9,10 +9,6 @@
 
 #include "headers.h"
 
-#define PWM_PERIOD_US 20000
-#define MAX_DUTY ((1 << 13) - 1)
-
-
 int SERVO_interpol_duty(int angulo);
 int PWM_SERVO_interpol(int voltage);
 void SERVO_angulo_move(int angulo);
