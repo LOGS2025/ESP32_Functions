@@ -3,28 +3,27 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 
-#include "esp_adc/adc_oneshot.h"
-#include "hal/adc_types.h"
+    #include "esp_adc/adc_oneshot.h"
+        #include "hal/adc_types.h"
 
-// Calibration for raw voltage
-#include "esp_adc/adc_cali.h"
+    // Calibration for raw voltage
+    #include "esp_adc/adc_cali.h"
 
-#include "esp_log.h"
+    #include "esp_log.h"
+        #include "esp_log_buffer.h" // ESP_LOGI macro whic spits Information messages which describe normal flow of events
+        #include "esp_log_level.h"
 
 #define VMAX 3.3
-#define ADC_CHANNEL ADC_CHANNEL_4 // GPIO32
 
-/*
+typedef struct ADC_Monitor_cfg_pkg {
+    adc_oneshot_unit_init_cfg_t unit_t; // Unit
+    adc_oneshot_unit_handle_t handle_t; // Handle
+    adc_oneshot_chan_cfg_t channel_config_t; // Channel config
+    adc_channel_t channel; // Channel
+}ADC_Monitor_cfg_pkg;
 
-*/
+void ADC_init_unit(adc_oneshot_unit_init_cfg_t* unit_adc, adc_oneshot_unit_handle_t* handle_adc_unit, int flag_change_default);
 
-void ADC_init_oneshotUnit_and_start(
-    adc_oneshot_unit_handle_t* adc1_handle,
-    adc_oneshot_chan_cfg_t* adc_channel_config
-);
+void ADC_setup_and_init_channel_and_precision(adc_oneshot_chan_cfg_t* channel_config, adc_channel_t* channel, adc_oneshot_unit_handle_t handle_adc_unit, int default_flag);
 
-void ADC_oneshot_delUnit(adc_oneshot_unit_handle_t* adc_handle);
 
-void ADC_oneshot_read(adc_oneshot_unit_handle_t* adc_handle, adc_channel_t* channel, int * raw_lecture);
-
-double ADC_convert_raw(int Dout);

@@ -289,12 +289,55 @@ ___
  ## Line Fitting Scheme
 This uses the same configuration worked by _oneshot structs_:
 	We need to fill the next:
+ ### adc_line_fitting_config_t
 - unit_id -> the ADC
 - atten -> attenuation the raw results use
 - bitwidth 
- ### eFuse?
- 
+___
+ ##### eFuse?
+
+
+
+
+____
+
+```c title:"setup_config_struct.c"
+ESP_LOGI(TAG, "calibration scheme version is %s", "Line Fitting");
+adc_cali_line_fitting_config_t cali_config = {
+    .unit_id = unit,
+    .atten = atten,
+    .bitwidth = ADC_BITWIDTH_DEFAULT,
+};
+ESP_ERROR_CHECK(adc_cali_create_scheme_line_fitting(&cali_config, &handle));
+```
+
+ # ESP_LOG #Macro 
+ **ESP_LOGI** macro whic spits Information messages which describe normal flow of events -> Argument -> _ESP_LOG_INFO_.
+
+
+ ## Results
+  ### adc_cali_raw_to_votlage()
+   Returns in $[mV]$
+
+
+
 
 ___
 [^1]: GPIO : 
 	General Purpose Input/Output. [GPIO](https://en.wikipedia.org/wiki/General-purpose_input/output)
+
+
+
+___
+# DRIVERS
+
+```
+FÍSICO
+
+Microcontrolador { MP, ADC, ...}
+	|_ MUNDO DIGITAL
+		|_ Driver (Instrucciones e ID)                |-> API { manipula f()
+				|_ .h .c fabricante - ID - /path      |
+								|_ funciones--------> |
+```
+

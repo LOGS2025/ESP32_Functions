@@ -1,6 +1,6 @@
 #include "PWM_ledc.h"
 
-void change_Duty(int new_duty){
+void PWM_change_Duty(int new_duty){
     ESP_ERROR_CHECK(ledc_set_duty(LEDC_MODE, LEDC_CHANNEL, new_duty));
     ESP_ERROR_CHECK(ledc_update_duty(LEDC_MODE, LEDC_CHANNEL));
 }
@@ -28,7 +28,7 @@ void PWM_ledc_init_channel(int pot_gpio){
         .timer_sel      = LEDC_TIMER,
         .intr_type      = LEDC_INTR_DISABLE,
         .gpio_num       = pot_gpio,
-        .duty           = 0, // Set duty to 0%
+        .duty           = 3277, // Set duty to 0%
         .hpoint         = 0
     };
 
