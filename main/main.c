@@ -13,9 +13,11 @@
 #define MAX_DUTY ((1 << 13) - 1)
 
 
+int SERVO_interpol_duty(int angulo);
+int PWM_SERVO_interpol(int voltage);
+void SERVO_angulo_move(int angulo);
+void SERVO_angulo_move_volt(int voltage);
 
-uint32_t servo_duty_from_us(uint32_t us);
-void servo_set_angle(uint32_t angle);
 
 void app_main()
 {
@@ -67,49 +69,40 @@ void app_main()
         and then transforms it into mV units.                            */
 
     int n = 0;
-    int pos_ang = (1 * (180.0/4000));
-
-    while(n<1){
+    while(n<120){
     
             /******************************************************/
             /********************* RAW VOLTAGE ********************/
             /******************************************************/
             
-        //ESP_ERROR_CHECK(adc_oneshot_read(
-        //    adc_monitor_1.handle_oneshot_t, 
-        //    ESP32_ADC_CHANNEL, 
-        //    &raw_Voltage_from_ADC)
-        //);
-        //    
-        //    /******************************************************/
-        //    /********************* CAL VOLTAGE ********************/
-        //    /******************************************************/
-//
-        //ESP_ERROR_CHECK(adc_cali_raw_to_voltage(
-        //        adc_monitor_1.handle_cali_adc_unit, 
-        //        raw_Voltage_from_ADC, 
-        //        &cali_out_mV_Voltage
-        //    )
-        //);
-//
-        //ESP_LOGI("cali", "Raw: %d, Voltage: %d mV", raw_Voltage_from_ADC, cali_out_mV_Voltage);
-        //n++;
-//
-        //printf("Calibration Voltage : %d\n", cali_out_mV_Voltage);
-        //pos_ang = cali_out_mV_Voltage * (180.0/4000);
-        //printf("Posicion angular: %d\n", pos_ang*10);
-        
-        //PWM_change_Duty(pos_ang*10);
+        ESP_ERROR_CHECK(adc_oneshot_read(
+            adc_monitor_1.handle_oneshot_t, 
+            ESP32_ADC_CHANNEL, 
+            &raw_Voltage_from_ADC)
+        );
+            
+            /******************************************************/
+            /********************* CAL VOLTAGE ********************/
+            /******************************************************/
 
-        servo_set_angle(90);
-        esp_Delay(5000);
+        ESP_ERROR_CHECK(adc_cali_raw_to_voltage(
+                adc_monitor_1.handle_cali_adc_unit, 
+                raw_Voltage_from_ADC, 
+                &cali_out_mV_Voltage
+            )
+        );
+
+        ESP_LOGI("cali", "Raw: %d, Voltage: %d mV", raw_Voltage_from_ADC, cali_out_mV_Voltage);
+        n++;
+
+        printf("Calibration Voltage : %d\n", cali_out_mV_Voltage);      
+
+        SERVO_angulo_move_volt(cali_out_mV_Voltage);
         printf("Duty : %d ",(PWM_ledc_get_duty()));
         printf("Freq : %d\n",PWM_ledc_get_freq());
 
         n++;
     }
-
-    //PWM_set_0_Duty_safe(10, 10);
 
     /*********************************************************************/
     /********************* DELETE CALIBRATION HANDLE  ********************/
@@ -124,43 +117,26 @@ void app_main()
 
 }
 
-/*  SERVO  
-
-Documentation info:
-    freq = 50 Hz <- constant
-    Duty Cycle = 20 ms square wave <- constant
-
-    1ms = 0º
-
-    1.5ms = 90º
-
-    2ms = 180º
-
-*/
-
-uint32_t servo_duty_from_us(uint32_t us)
-{
-    return (us * MAX_DUTY) / PWM_PERIOD_US;
+    // Para interpolar -> 614 = 90º | >409 = 0º | <819 = 180º
+    // Para interpolar -> 600 = 90º | 300 = 0º | 1000 = 180º
+int SERVO_interpol_duty(int angulo){
+    // Punto 1 x = 0º | y = 300
+    // Punto 2 x = 180º | y = 1000
+    return ((1000 - 300)/(180.0)) * (angulo) + 300;
 }
 
-void servo_set_angle(uint32_t angle)
-{
-    uint32_t pulse_us;
+int PWM_SERVO_interpol(int voltage){
+    // Punto 1 x = 140mV | y = 0º
+    // Punto 2 x = 3150mV | y = 180º
+    return ((180.0)/(3150-140)) * (voltage - 140);
+}
 
-    if (angle > 180) angle = 180;
+void SERVO_angulo_move(int angulo){
+    PWM_change_Duty(SERVO_interpol_duty(angulo));
+    esp_Delay(500);
+}
 
-    pulse_us = 1000 + (angle * 1000) / 180;  // 1ms → 2ms
-
-    uint32_t duty = servo_duty_from_us(pulse_us);
-
-    ESP_ERROR_CHECK(ledc_set_duty(
-        LEDC_LOW_SPEED_MODE,
-        LEDC_CHANNEL_0,
-        duty
-    ));
-
-    ESP_ERROR_CHECK(ledc_update_duty(
-        LEDC_LOW_SPEED_MODE,
-        LEDC_CHANNEL_0
-    ));
+void SERVO_angulo_move_volt(int voltage){
+    PWM_change_Duty(SERVO_interpol_duty(PWM_SERVO_interpol(voltage)));
+    esp_Delay(500);
 }
