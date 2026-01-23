@@ -8,13 +8,13 @@
 #define LEDC_CHANNEL            LEDC_CHANNEL_0
 #define LEDC_DUTY_RES           LEDC_TIMER_13_BIT // Set duty resolution to 13 bits
 #define LEDC_MAX_DUTY           (409.6) // Set duty to 50%. (2 ** 13) * 50% = 4096
-#define LEDC_FREQUENCY          (50) // Frequency in Hertz. Set frequency at 4 kHz
+#define LEDC_FREQUENCY          (50) // Frequency in Hertz. 
 
 /*******************************************************************/
 /********************* MACRO FOR ADC - CHANNEL *********************/
 /*******************************************************************/
 
-#define ADC_PIN_36
+#define ADC_PIN_35
 
 #ifdef ADC_PIN_36
     #define ESP32_ADC_UNIT ADC_UNIT_1
@@ -64,3 +64,9 @@ ADC_ATTEN_DB_11
 
 150 mV ~ 2450 mV
 */
+
+/***************************************************************/
+/********************* MACRO FOR BUFFER SIZE *******************/
+/***************************************************************/
+
+#define BUFFER_SAMPLES 100

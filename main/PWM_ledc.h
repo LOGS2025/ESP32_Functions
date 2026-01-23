@@ -11,9 +11,9 @@
 #include "led_gpio.h"
 #include "headers.h"
 
-void PWM_ledc_init_timer(void);
+void PWM_ledc_init_timer(int freq);
 
-void PWM_ledc_init_channel(int pot_gpio);
+void PWM_ledc_init_channel(int pot_gpio, int duty_start);
 
 void PWM_change_Duty(int new_duty);
 

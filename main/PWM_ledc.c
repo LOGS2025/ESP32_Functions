@@ -5,11 +5,11 @@ void PWM_change_Duty(int new_duty){
     ESP_ERROR_CHECK(ledc_update_duty(LEDC_MODE, LEDC_CHANNEL));
 }
 
-void PWM_ledc_init_timer(void){
+void PWM_ledc_init_timer(int freq){
         //PWM 
     // LEDC PWM timer config
     ledc_timer_config_t ledc_timer = {
-        .freq_hz = LEDC_FREQUENCY,
+        .freq_hz = freq,
         .speed_mode = LEDC_MODE,
         .timer_num = LEDC_TIMER,
         .duty_resolution = LEDC_DUTY_RES,
@@ -19,7 +19,7 @@ void PWM_ledc_init_timer(void){
     ESP_ERROR_CHECK(ledc_timer_config(&ledc_timer));
 }
 
-void PWM_ledc_init_channel(int pot_gpio){
+void PWM_ledc_init_channel(int pot_gpio, int duty_start){
 
     // LEDC PWM channel config
     ledc_channel_config_t ledc_channel = {
@@ -28,7 +28,7 @@ void PWM_ledc_init_channel(int pot_gpio){
         .timer_sel      = LEDC_TIMER,
         .intr_type      = LEDC_INTR_DISABLE,
         .gpio_num       = pot_gpio,
-        .duty           = 3277, // Set duty to 0%
+        .duty           = duty_start, // Set duty to 0%
         .hpoint         = 0
     };
 
